@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CIS3505_LabTres</string>
+
+    <string-array name = "color_labels_array">
+        <item>BLANCO</item>
+        <item>ROJO</item>
+        <item>AZUL</item>
+        <item>VERDE</item>
+        <item>AMARILLO</item>
+    </string-array>
+</resources>
