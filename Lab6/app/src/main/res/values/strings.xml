@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">CIS3505_Lab6</string>
+
+    <string-array name="color_labels_array">
+        <item>WHITE</item>
+        <item>RED</item>
+        <item>BLUE</item>
+        <item>GREEN</item>
+        <item>YELLOW</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
