@@ -14,7 +14,7 @@ import android.widget.Spinner;
 public class PaletteFragment extends Fragment {
     SenderInterface activity;
     final String[] actualColors = {"WHITE","RED", "BLUE", "GREEN", "YELLOW"};
-
+    boolean flag = false;
     public PaletteFragment(){
     }
 
@@ -48,10 +48,14 @@ public class PaletteFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(flag) {
+                    String color = parent.getSelectedItem().toString();
+                    //pass the data from this fragment to implemention of interface
+                    activity.passColor(actualColors[position]);
+                }
+                flag = true;
 
-                String color = parent.getSelectedItem().toString();
-                //pass the data from this fragment to implemention of interface
-                activity.passColor(actualColors[position]);
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

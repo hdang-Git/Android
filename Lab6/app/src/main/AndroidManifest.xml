@@ -15,8 +15,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="edu.temple.cis3505_lab6.CanvasActivity" />
-        <activity android:name="edu.temple.cis3505_lab6.PaletteActivity"/>
     </application>
 
 </manifest>

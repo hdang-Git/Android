@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements PaletteFragment.S
                     .beginTransaction()
                     .add(R.id.frag2, receiver)
                     .commit();
-        } else {        //else switch palette fragment with canvas fragment layout (show one fragment)
-            doTransition();
         }
     }
 
@@ -42,14 +40,18 @@ public class MainActivity extends AppCompatActivity implements PaletteFragment.S
         log.info("doTransition() is called");
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag1, receiver)
+                .add(R.id.frag1, receiver)
                 .addToBackStack(null)
                 .commit();
+        getFragmentManager().executePendingTransactions();  //blocking call
     }
 
     //Overridden interface implementation
     @Override
     public void passColor(String color){
+        if (!twoPanes){
+            doTransition();
+        }
         receiver.changeBackgroundColor(color);
     }
 }
