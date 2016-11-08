@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Lab7</string>
-    <string name="leftArrow">left</string>
-    <string name="rightArrow">right</string>
+    <string name="leftArrow">backward</string>
+    <string name="rightArrow">forward</string>
     <string name="refresh">refresh</string>
+    <string name="leftChevron">previous</string>
+    <string name="rightChevron">next</string>
+    <string name="newPage">new_page</string>
+    <string name="addressBar">Search or enter address</string>
 </resources>
