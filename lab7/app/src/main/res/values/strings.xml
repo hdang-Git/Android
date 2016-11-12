@@ -6,5 +6,8 @@
     <string name="leftChevron">previous</string>
     <string name="rightChevron">next</string>
     <string name="newPage">new_page</string>
-    <string name="addressBar">Search or enter address</string>
+    <string name="addressBar">Enter address</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
