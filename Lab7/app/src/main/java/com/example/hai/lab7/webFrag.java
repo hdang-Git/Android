@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 
@@ -36,7 +37,8 @@ public class webFrag extends Fragment {
         View v = inflater.inflate(R.layout.fragment_web, container, false);
         // Inflate the layout for this fragment
         webView = new WebView(container.getContext()); //getActivity
-
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
         return v;
     }
 
