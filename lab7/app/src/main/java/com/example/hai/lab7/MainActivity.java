@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     Logger log = Logger.getAnonymousLogger();
     EditText textField;
     String input;
-    webFrag receiver = new webFrag();
+    WebFragment receiver = new WebFragment();
 
 
     @Override
