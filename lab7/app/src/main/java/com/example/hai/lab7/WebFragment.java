@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class WebFragment extends Fragment {
     WebView webView;
     Logger log = Logger.getAnonymousLogger();
+
     public WebFragment() {
         // Required empty public constructor
     }
@@ -41,9 +42,10 @@ public class WebFragment extends Fragment {
         // Inflate the layout for this fragment
 
         webView = (WebView) v.findViewById(R.id.fragment_web); //container.getContext()
-        webView.setWebViewClient(new WebViewClient());
+        /*
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
         try {
@@ -51,7 +53,8 @@ public class WebFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        webView.setWebViewClient(new WebViewClient());
+        */
         /*
         webView = new WebView(getActivity()); //getActivity //container.getContext()
         webView.setWebViewClient(new WebViewClient());
@@ -65,7 +68,16 @@ public class WebFragment extends Fragment {
 
     public void changeURL(String url){
         log.info("ChangeURL Called in fragment\n");
-        webView.loadUrl("http://www.google.com");
+
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+
+        webView.setWebViewClient(new WebViewClient());
+
+        webView.loadUrl(url);
     }
 
     public interface SenderInterface{
