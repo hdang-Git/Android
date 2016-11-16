@@ -3,7 +3,7 @@ package com.example.hai.lab7;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,52 +36,33 @@ public class WebFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_web, container, false);
         // Inflate the layout for this fragment
 
-        webView = (WebView) v.findViewById(R.id.fragment_web); //container.getContext()
-        /*
+        webView = (WebView) v.findViewById(R.id.fragment_web);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setUseWideViewPort(true);
-        try {
-            webView.loadUrl("http://www.yahoo.com");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         webView.setWebViewClient(new WebViewClient());
-        */
-        /*
-        webView = new WebView(getActivity()); //getActivity //container.getContext()
-        webView.setWebViewClient(new WebViewClient());
-        webView.getSettings().setJavaScriptEnabled(true);
-        //webView.getSettings().setLoadWithOverviewMode(true);
-        //webView.getSettings().setUseWideViewPort(true);
-        //webView.getSettings().setSupportZoom(false);
-        */
+
         return v;
     }
 
     public void changeURL(String url){
         log.info("ChangeURL Called in fragment\n");
-
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setUseWideViewPort(true);
-
-        webView.setWebViewClient(new WebViewClient());
-
-        webView.loadUrl(url);
-    }
-
-    public interface SenderInterface{
-
+        //validate non-empty url
+        if(url != null)
+            if(!url.startsWith("http://")){ //if it doesn't have valid start create a valid url
+                String temp = "https://" + url;
+                url = temp;
+            }
+            webView.loadUrl(url);
     }
 
 }
