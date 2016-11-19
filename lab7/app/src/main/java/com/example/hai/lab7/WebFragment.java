@@ -3,7 +3,6 @@ package com.example.hai.lab7;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import java.util.logging.Logger;
 
 
@@ -65,5 +63,22 @@ public class WebFragment extends Fragment {
             }
             webView.loadUrl(url);
     }
+    public void goBackward(){
+        if(webView.canGoBack()){
+            webView.goBack();
+        } else {
+
+        }
+    }
+
+    public void goForward(){
+        if(webView.canGoForward()){
+            webView.goForward();
+        } else {
+
+        }
+    }
+
+
 
 }

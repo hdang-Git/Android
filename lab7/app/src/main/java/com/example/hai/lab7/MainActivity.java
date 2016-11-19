@@ -1,6 +1,5 @@
 package com.example.hai.lab7;
 
-//import android.app.FragmentManager;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,12 +10,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
+
+import static android.R.attr.keycode;
+import static android.view.KeyEvent.ACTION_DOWN;
+import static android.view.KeyEvent.KEYCODE_ENTER;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<WebFragment> fragments = new ArrayList<>();
@@ -44,6 +50,23 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(new CustomPagerAdapter(getSupportFragmentManager()));
 
         textField = (EditText) findViewById(R.id.editText);
+
+
+        //textField.setOnKeyListener(null);
+        //textField.setOnEditorActionListener(null);
+        //textField.setImeOptions(EditorInfo.IME_ACTION_GO);
+
+        textField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                log.info("onEditorAction called");
+                if(actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)){
+                    log.info("Enter key pressed");
+                    go();
+                }
+                return false;
+            }
+        });
 
         //Disable title
         ActionBar ab = getSupportActionBar();
@@ -102,17 +125,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_go:
-                //User pressed the "go" button to go to the page
-                log.info("Go Pressed.");
-                //Once the go button is pressed, call onPrepareOptionsMenu() to change to refresh icon
-                invalidateOptionsMenu();
-                //Save current state
-                currentIndex = pager.getCurrentItem();
-                receiver = fragments.get(currentIndex);
-                input = textField.getText().toString();
-                //Call fragment to load url
-                receiver.changeURL(input);
-                addressBarLoaded = false;
+                go();
                 return true;
 
             case R.id.action_prev:
@@ -131,14 +144,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_new:
                 //User chose the "new" action to get a new window
                 log.info("New Pressed.");
-
+                //Create new fragment and add web frag to array
                 WebFragment fragment = new WebFragment();
                 fragments.add(sizeIndex, fragment);
                 fragNum++;
-
+                //link to adapter and notify of the change
                 pa = pager.getAdapter();
                 pa.notifyDataSetChanged();
-
                 receiver = fragment;
                 pager.setCurrentItem(sizeIndex);
 
@@ -150,11 +162,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_back:
                 // User chose the "back" item...
                 log.info("Back Pressed.");
+                receiver.goBackward();
                 return true;
 
             case R.id.action_forward:
                 // User chose the "forward" action
                 log.info("Forward Pressed.");
+                receiver.goForward();
                 return true;
 
             default:
@@ -163,4 +177,43 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void go(){
+        //User pressed the "go" button to go to the page
+        log.info("Go Pressed.");
+        //Once the go button is pressed, call onPrepareOptionsMenu() to change to refresh icon
+        invalidateOptionsMenu();
+        //Save current state
+        currentIndex = pager.getCurrentItem();
+        receiver = fragments.get(currentIndex);
+        input = textField.getText().toString();
+        //Call fragment to load url
+        receiver.changeURL(input);
+        addressBarLoaded = false;
+    }
+    /*
+        if(event.getAction() == EditorInfo.IME_ACTION_DONE && event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+            log.info("Success on enter key");
+            input = textField.getText().toString();
+            if(input != null)
+                receiver.changeURL(input);
+        }*/
+    /*
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        //if in edittext the url is typed in with enter key pressed, pass the url
+        log.info("onKeyUp() called");
+
+
+        switch(keyCode){
+            case KeyEvent.KEYCODE_ENTER:
+                input = textField.getText().toString();
+                receiver.changeURL(input);
+                return true;
+
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+    }
+    */
 }
