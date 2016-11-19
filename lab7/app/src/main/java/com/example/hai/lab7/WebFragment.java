@@ -3,6 +3,7 @@ package com.example.hai.lab7;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
 public class WebFragment extends Fragment {
     WebView webView;
     Logger log = Logger.getAnonymousLogger();
-
+    String url;
     public WebFragment() {
         // Required empty public constructor
     }
@@ -43,9 +44,9 @@ public class WebFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_web, container, false);
         // Inflate the layout for this fragment
-
+        View v = inflater.inflate(R.layout.fragment_web, container, false);
+        //Set up web view
         webView = (WebView) v.findViewById(R.id.fragment_web);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);

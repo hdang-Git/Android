@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     WebFragment receiver;
     ViewPager pager;
     PagerAdapter pa;
+    boolean addressBarLoaded = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Set up view pager
         pager = (ViewPager) findViewById(R.id.pager);
+        pager.setOffscreenPageLimit(3); // the number of "off screen" pages to keep loaded each side of the current page
         pager.setAdapter(new CustomPagerAdapter(getSupportFragmentManager()));
 
         textField = (EditText) findViewById(R.id.editText);
@@ -87,21 +89,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(addressBarLoaded){
+            menu.getItem(0).setIcon(R.drawable.ic_arrow_forward_black_24dp);
+        } else {
+            menu.getItem(0).setIcon(R.drawable.ic_refresh_black_24dp);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.action_refresh:
-                //User pressed the "refresh" button to refresh the page
-                log.info("Refresh Pressed.");
-
+            case R.id.action_go:
+                //User pressed the "go" button to go to the page
+                log.info("Go Pressed.");
+                //Once the go button is pressed, call onPrepareOptionsMenu() to change to refresh icon
+                invalidateOptionsMenu();
+                //Save current state
                 currentIndex = pager.getCurrentItem();
                 receiver = fragments.get(currentIndex);
                 input = textField.getText().toString();
-
-                if(input != null){
-                    receiver.changeURL(input);
-                } else {
-                    receiver.changeURL(input);
-                }
+                //Call fragment to load url
+                receiver.changeURL(input);
+                addressBarLoaded = false;
                 return true;
 
             case R.id.action_prev:
@@ -130,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
 
                 receiver = fragment;
                 pager.setCurrentItem(sizeIndex);
+
+                //Once the new button is pressed, call onPrepareOptionsMenu() to change to go icon
+                invalidateOptionsMenu();
+                addressBarLoaded = true;
                 return true;
 
             case R.id.action_back:
