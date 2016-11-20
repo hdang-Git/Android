@@ -16,13 +16,11 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import static android.R.attr.keycode;
-import static android.view.KeyEvent.ACTION_DOWN;
-import static android.view.KeyEvent.KEYCODE_ENTER;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<WebFragment> fragments = new ArrayList<>();
@@ -51,11 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         textField = (EditText) findViewById(R.id.editText);
 
-
-        //textField.setOnKeyListener(null);
-        //textField.setOnEditorActionListener(null);
-        //textField.setImeOptions(EditorInfo.IME_ACTION_GO);
-
+        //Implement soft keyboard listener for when the user presses enter key rather than use the go icon
         textField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -162,13 +156,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_back:
                 // User chose the "back" item...
                 log.info("Back Pressed.");
-                receiver.goBackward();
+                if(receiver != null){
+                    receiver.goBackward();
+                } else {
+                    Toast.makeText(this, "Empty", Toast.LENGTH_SHORT).show();
+                }
                 return true;
 
             case R.id.action_forward:
                 // User chose the "forward" action
                 log.info("Forward Pressed.");
-                receiver.goForward();
+                if(receiver != null) {
+                    receiver.goForward();
+                } else{
+                    Toast.makeText(this, "Empty", Toast.LENGTH_SHORT).show();
+                }
                 return true;
 
             default:
@@ -191,29 +193,4 @@ public class MainActivity extends AppCompatActivity {
         receiver.changeURL(input);
         addressBarLoaded = false;
     }
-    /*
-        if(event.getAction() == EditorInfo.IME_ACTION_DONE && event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-            log.info("Success on enter key");
-            input = textField.getText().toString();
-            if(input != null)
-                receiver.changeURL(input);
-        }*/
-    /*
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        //if in edittext the url is typed in with enter key pressed, pass the url
-        log.info("onKeyUp() called");
-
-
-        switch(keyCode){
-            case KeyEvent.KEYCODE_ENTER:
-                input = textField.getText().toString();
-                receiver.changeURL(input);
-                return true;
-
-            default:
-                return super.onKeyUp(keyCode, event);
-        }
-    }
-    */
 }

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
 import java.util.logging.Logger;
 
 
@@ -63,19 +65,28 @@ public class WebFragment extends Fragment {
             }
             webView.loadUrl(url);
     }
-    public void goBackward(){
-        if(webView.canGoBack()){
-            webView.goBack();
-        } else {
 
+    public void goBackward(){
+        if(webView != null) {
+            if (webView.canGoBack()) {
+                webView.goBack();
+            } else {
+                Toast.makeText(getContext(), "Cannot go backward.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "No webview exists.", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void goForward(){
-        if(webView.canGoForward()){
-            webView.goForward();
+        if(webView != null) {
+            if (webView.canGoForward()) {
+                webView.goForward();
+            } else {
+                Toast.makeText(getContext(), "Cannot go forward.", Toast.LENGTH_SHORT).show();
+            }
         } else {
-
+            Toast.makeText(getContext(), "No webview exists.", Toast.LENGTH_SHORT).show();
         }
     }
 
