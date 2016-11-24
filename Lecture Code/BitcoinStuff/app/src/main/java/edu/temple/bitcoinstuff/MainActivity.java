@@ -14,20 +14,24 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.logging.Logger;
 
 public class MainActivity extends Activity {
-
+    Logger log = Logger.getAnonymousLogger();
     //choosing name and current value of bitcoin
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                log.info("onClick() called");
                 Thread t = new Thread(){
                     @Override
                     public void run(){
+                        log.info("run() is called");
                         try {
                             URL url = new URL("http://btc.blockr.io/api/v1/coin/info");
                             BufferedReader reader = new BufferedReader(
@@ -55,6 +59,7 @@ public class MainActivity extends Activity {
 
                     }
                 };
+                t.start();
             }
         });
     }
@@ -70,11 +75,11 @@ public class MainActivity extends Activity {
                 JSONObject coin = data.getJSONObject("coin");
                 coinName = coin.getString("name");
                 ((TextView) findViewById(R.id.coinName)).setText(coinName);
-
+                log.info("coinName: " + coinName);
                 coinPrice = data.getJSONObject("markets").getJSONObject("coinbase").getDouble("value");
-                ((TextView) findViewById(R.id.coinName)).setText(String.valueOf(coinPrice));
-
-
+                ((TextView) findViewById(R.id.coinPrice)).setText(String.valueOf(coinPrice));
+                //Log.d("coinPrice: %d" + coinPrice, "");
+                log.info("coinPrice: " + coinPrice);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
