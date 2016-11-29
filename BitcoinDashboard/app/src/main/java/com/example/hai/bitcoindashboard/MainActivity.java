@@ -3,6 +3,7 @@ package com.example.hai.bitcoindashboard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity
 
     Intent in;
     ActionBar ab;
+    BlockFragment blockFrag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Create imageView
-        ImageView img = (ImageView) findViewById(R.id.imageView);
+        // ImageView img = (ImageView) findViewById(R.id.imageView);
         //Picasso.with(img.getContext()).load("http://i.imgur.com/DvpvklR.png").into(img);
         ab = getSupportActionBar();
     }
@@ -83,16 +86,18 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_bitcoin) {
             //go to homepage
-            in = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(in);
         } else if (id == R.id.nav_charts) {
             //show price chart
             ab.setTitle("Bitcoin Graphs");
         } else if (id == R.id.nav_block) {
             //show block info
-            in = new Intent(getApplicationContext(), Block.class);
+            blockFrag = new BlockFragment();
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.mainFragment, blockFrag)
+                    .commit();
             ab.setTitle("Block Info");
-            startActivity(in);
+
         }
         //get current balance of provided bitcoin address
 
