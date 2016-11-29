@@ -3,7 +3,6 @@ package com.example.hai.bitcoindashboard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,15 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Intent in;
     ActionBar ab;
-    BlockFragment blockFrag;
+    BlockNavFragment blockFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +88,7 @@ public class MainActivity extends AppCompatActivity
             ab.setTitle("Bitcoin Graphs");
         } else if (id == R.id.nav_block) {
             //show block info
-            blockFrag = new BlockFragment();
+            blockFrag = new BlockNavFragment();
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.mainFragment, blockFrag)

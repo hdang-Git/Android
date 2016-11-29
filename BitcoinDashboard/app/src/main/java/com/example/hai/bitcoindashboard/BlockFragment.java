@@ -15,8 +15,8 @@ public class BlockFragment extends Fragment {
 
 
     public BlockFragment() {
-    }        // Required empty public constructor
-
+        // Required empty public constructor
+    }
 
 
     @Override

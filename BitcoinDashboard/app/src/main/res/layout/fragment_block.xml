@@ -10,33 +10,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:text="Button"
+        <TextView
+            android:text="Block Number:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="22dp"
-            android:layout_marginTop="18dp"
-            android:id="@+id/button3"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="25dp"
+            android:id="@+id/textView3"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentStart="true" />
 
-        <EditText
+        <TextView
+            android:text="Hash: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:layout_alignBottom="@+id/button3"
-            android:layout_toStartOf="@+id/button3"
-            android:id="@+id/editText2"
-            android:text="Enter Block Number" />
+            android:id="@+id/textView4"
+            android:layout_below="@+id/textView3"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_marginTop="12dp" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/button3"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="23dp">
+        <TextView
+            android:text="Confirmations: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
+            android:layout_alignStart="@+id/textView4"
+            android:layout_marginTop="12dp"
+            android:id="@+id/textView5" />
 
-        </FrameLayout>
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView5"
+            android:layout_alignStart="@+id/textView5"
+            android:layout_marginTop="12dp"
+            android:id="@+id/textView6" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView6"
+            android:layout_alignStart="@+id/textView6"
+            android:layout_marginTop="12dp"
+            android:id="@+id/textView7" />
     </RelativeLayout>
 </FrameLayout>
