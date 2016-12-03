@@ -9,13 +9,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.logging.Logger;
 
 
@@ -33,6 +36,9 @@ public class BlockNavFragment extends Fragment {
     PagerAdapter pa;
     Button enterButton;
     FloatingActionButton addButton;
+    EditText textField;
+    int num;
+    BlockFragment receiver;
 
     public BlockNavFragment() {
     }        // Required empty public constructor
@@ -48,6 +54,8 @@ public class BlockNavFragment extends Fragment {
         log.info("onCreateView() called");
         enterButton = (Button) v.findViewById(R.id.enterButton);
         addButton = (FloatingActionButton) v.findViewById(R.id.addFab);
+        textField = (EditText) v.findViewById(R.id.inputField);
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,17 +75,28 @@ public class BlockNavFragment extends Fragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String input = textField.getText().toString();
+                try{
+                    num = Integer.parseInt(input);
+                    log.info("Success, input is number.");
+                    //Pass info to child fragment BlockFragment
+                    currentIndex = pager.getCurrentItem();
+                    receiver = fragments.get(currentIndex);
+                    receiver.retrieveBlockData(num);
 
+                    log.info("Success with retriever");
+                }catch(NumberFormatException e){
+                    Log.i("", "Number Format Error: "+ e);
+                } catch(NullPointerException f){
+                    Log.i("", "Null Pointer: " + f);
+                }
             }
         });
+
         //Set up view pager
         pager = (ViewPager) v.findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3); // the number of "off screen" pages to keep loaded each side of the current page
         pager.setAdapter(new CustomPagerAdapter(getChildFragmentManager()));
-
-
-
-
         return v;
     }
 
@@ -107,8 +126,6 @@ public class BlockNavFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         /*
         BlockFragment block = new BlockFragment();

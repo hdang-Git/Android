@@ -32,7 +32,7 @@
         android:text="Enter Block Number" />
 
     <Button
-        android:text="Find"
+        android:text="@string/find"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button"
