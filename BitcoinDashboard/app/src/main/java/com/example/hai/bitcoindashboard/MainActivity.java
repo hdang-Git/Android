@@ -3,6 +3,7 @@ package com.example.hai.bitcoindashboard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity
     Intent in;
     ActionBar ab;
     BlockNavFragment blockFrag;
+    AddressFragment addrFrag;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -90,15 +94,16 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_block) {
             //show block info
             blockFrag = new BlockNavFragment();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.mainFragment, blockFrag)
-                    .commit();
+            transaction.replace(R.id.mainFragment, blockFrag);
             ab.setTitle("Block Info");
-
+        } else if(id == R.id.nav_address){
+            //get current balance of provided bitcoin address
+            addrFrag = new AddressFragment();
+            transaction.replace(R.id.mainFragment, addrFrag);
+            ab.setTitle("Address Info");
         }
-        //get current balance of provided bitcoin address
-
+        transaction.addToBackStack(null);
+        transaction.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

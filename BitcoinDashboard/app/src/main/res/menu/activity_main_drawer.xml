@@ -14,7 +14,12 @@
         <item
             android:id="@+id/nav_block"
             android:icon="@drawable/ic_local_atm_black_24dp"
-            android:title="@string/bitcoinWallet" />
+            android:title="@string/bitcoinBlock" />
+        <item
+            android:id="@+id/nav_address"
+            android:icon="@drawable/ic_coin_24dp"
+            android:title="@string/bitcoinAddress"
+        />
     </group>
 <!--
     <item android:title="Communicate">

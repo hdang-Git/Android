@@ -5,7 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="bitcoinPrice">BTC Price</string>
     <string name="bitcoinCharts">BTC Graph</string>
-    <string name="bitcoinWallet">BTC Wallet</string>
+    <string name="bitcoinBlock">BTC Block</string>
+    <string name="bitcoinAddress">BTC Address</string>
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
