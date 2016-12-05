@@ -1,6 +1,7 @@
 package com.example.hai.bitcoindashboard;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,16 +10,32 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -29,12 +46,24 @@ public class AddressFragment extends Fragment {
 
     EditText input;
     ImageButton imgButton;
+    ListView list;
+    ArrayAdapter<String> adapter;
     Logger log = Logger.getAnonymousLogger();
+
+    ArrayList<String> addrList;
+    String fileName = "addressStuff";
+    File file;
+    Context c;
+
+    //default list of addresses
+    String[] arr = {"198aMn6ZYAczwrE5NvNTUMyJ5qkfy4g3Hi", "1L8meqhMTRpxasdGt8DHSJfscxgHHzvPgk",
+            "1kidsECR1aVTKACYQs5spxJASWAwLiX5y",  "17W3w9BTcsfKsoWAKX4bykRqdxpr6eKtCX",
+            "3J5KeQSVBUEs3v2vEEkZDBtPLWqLTuZPuD", "3Nxwenay9Z8Lc9JBiywExpnEFiLp6Afp8v"};
+
 
     public AddressFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,20 +73,123 @@ public class AddressFragment extends Fragment {
 
         input = (EditText) v.findViewById(R.id.input_addr);
         imgButton = (ImageButton) v.findViewById(R.id.imageButton);
+        list = (ListView) v.findViewById(R.id.listView);
+
+        file = getActivity().getFilesDir();
+        c = getActivity().getApplicationContext();
+        checkForExistingFile();
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, addrList);
+        list.setAdapter(adapter);
+
+
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("", "Image button is clicked");
                 try{
+
                     String address = input.getText().toString();
                     retrieveAddressData(address);
+                    addrList.add(0, address);       //add to beginning of arraylist, and shift all others
+                    adapter.notifyDataSetChanged(); //update listview
                 }catch(NullPointerException e){
                     Log.d("", "Null Pointer Error in AddressFragment - onCreateView() " + e);
                 }
             }
         });
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("", "onItemClick() for listview is called");
+                String address = list.getItemAtPosition(position).toString();
+                retrieveAddressData(address);
+            }
+        });
+
         return v;
+    }
+
+    //Checks for existing internal file. If doesn't exist, make one and load in arr into arrayList
+    //If does exist, read and fill in arrayList
+    public void checkForExistingFile(){
+        log.info("checkForExistingFile() called");
+        try{
+            //create reference to file path
+            //file = new File(fileName);
+            //if file doesn't exist create it else read from it
+            if(!file.exists()){
+                log.info("File DNE!");
+                //populate arraylist with array
+                addrList = new ArrayList<>(Arrays.asList(arr));
+                writeFile(fileName);
+            } else {
+                log.info("File Exists!");
+                readFile(fileName);
+            }
+        } catch(NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    //Write to a file contents of arraylist
+    public void writeFile(String file){
+        log.info("writeFile() called");
+        //PrintWriter outFile = null;
+        FileOutputStream output = null;
+        ObjectOutputStream out = null;
+        try{
+            /*
+            outFile = new PrintWriter(new FileOutputStream(file));
+            for(String bitAddress : addrList){
+                outFile.write(bitAddress + "\n");
+            }
+            outFile.close();
+            */
+            //In order to write arraylist, it must be serialized
+            output = c.openFileOutput(file, Context.MODE_PRIVATE);
+            out = new ObjectOutputStream(output);
+            out.writeObject(addrList);
+            out.flush();
+            out.close();
+            output.close();
+            log.info("Writing completed successfully");
+        } catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    //Read from file and populate arraylist
+    public void readFile(String file){
+        log.info("readFile() called");
+        //BufferedReader rd = null;
+        FileInputStream input = null;
+        ObjectInputStream in = null;
+        try{
+            //In order to read arraylist, it must be deserialized
+            input = c.openFileInput(file);
+            in = new ObjectInputStream(input);
+            addrList = (ArrayList) in.readObject();
+            in.close();
+            input.close();
+            /*
+            rd = new BufferedReader(new FileReader(file));
+            String line;
+            while((line = rd.readLine()) != null){
+                addrList.add(line);
+            }
+            rd.close();
+            */
+            log.info("Reading completed successfully");
+        } catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        } catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
     public String appendToUrl(String address){
