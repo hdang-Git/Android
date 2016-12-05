@@ -10,16 +10,37 @@
         android:layout_height="match_parent">
     <!-- TODO: Update blank fragment layout -->
 
+        <TextView
+            android:text="@string/addrBal"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:id="@+id/addrBalance"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:layout_marginTop="12dp"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="42dp"
+            android:layout_below="@+id/imageButton"
+            android:layout_alignParentStart="true" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_pageview_black_24dp"
-            android:layout_marginTop="38dp"
             android:id="@+id/imageButton"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="24dp" />
+            android:layout_marginEnd="18dp"
+            android:layout_alignBottom="@+id/input_addr"
+            android:layout_toStartOf="@+id/deleteFab" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -27,52 +48,22 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/input_addr"
-            android:layout_alignTop="@+id/imageButton"
-            android:layout_toStartOf="@+id/imageButton"
-            android:layout_marginEnd="34dp"
-            android:hint="Enter in Address" />
+            android:hint="Enter in Address"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/addrBalance"
+            android:layout_alignStart="@+id/addrBalance"
+            android:layout_toStartOf="@+id/imageButton" />
 
-
-        <!--
-        <TextView
-            android:text="TextView"
+        <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/addrBalance"
-            android:background="@drawable/shape"
-            android:textAppearance="@android:style/TextAppearance.Material.Headline"
-            android:layout_marginTop="28dp"
-            android:layout_below="@+id/imageButton"
-            android:layout_alignStart="@+id/input_addr" />
-
-        -->
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="76dp"
-            android:layout_below="@+id/linearBorder"
-            android:layout_alignParentStart="true" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape"
-            android:id="@+id/linearBorder"
-            android:layout_below="@+id/input_addr"
-            android:layout_alignParentStart="true">
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:id="@+id/addrBalance"
-                android:textAppearance="@android:style/TextAppearance.Material.Headline"
-                android:layout_marginTop="28dp" />
-
-        </LinearLayout>
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/delete_empty"
+            android:id="@+id/deleteFab"
+            android:layout_marginEnd="17dp"
+            android:layout_alignTop="@+id/input_addr"
+            android:layout_alignEnd="@+id/addrBalance" />
 
     </RelativeLayout>
 </FrameLayout>

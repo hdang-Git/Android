@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,13 +49,14 @@ public class AddressFragment extends Fragment {
     EditText input;
     ImageButton imgButton;
     ListView list;
+    FloatingActionButton fab;
     ArrayAdapter<String> adapter;
     Logger log = Logger.getAnonymousLogger();
 
-    ArrayList<String> addrList;
-    String fileName = "addressStuff";
+    ArrayList<String> addrList; //arraylist of addresses to store
+    String fileName = "addressStuff"; //filename of internal file
     File file;
-    Context c;
+    Context c;      //applicaiton context
 
     //default list of addresses
     String[] arr = {"198aMn6ZYAczwrE5NvNTUMyJ5qkfy4g3Hi", "1L8meqhMTRpxasdGt8DHSJfscxgHHzvPgk",
@@ -73,15 +76,17 @@ public class AddressFragment extends Fragment {
 
         input = (EditText) v.findViewById(R.id.input_addr);
         imgButton = (ImageButton) v.findViewById(R.id.imageButton);
+        fab = (FloatingActionButton) v.findViewById(R.id.deleteFab);
         list = (ListView) v.findViewById(R.id.listView);
 
+        //find file reference to implement internal file storage
         file = getActivity().getFilesDir();
         c = getActivity().getApplicationContext();
         checkForExistingFile();
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, addrList);
         list.setAdapter(adapter);
 
-
+        //search for only one address that the user typed and add to beginning of arraylist
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +103,32 @@ public class AddressFragment extends Fragment {
             }
         });
 
+        //delete stored internal address file when this button is clicked
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Floating Action Button clicked", Toast.LENGTH_SHORT).show();
+                try{
+                    boolean deleted;
+                    log.info("Delete internal address file called");
+                    if(file.exists()){
+                        log.info("file exists");
+                        if(deleted = file.delete()){
+                            log.info("file deleted" + deleted);
+                            Toast.makeText(getContext(), "History cleared", Toast.LENGTH_SHORT).show();
+                        }
+                        log.info("No file to delete: " + deleted);
+                    } else {
+                        log.info("No such file to delete");
+                        Toast.makeText(getContext(), "No addresses exists", Toast.LENGTH_SHORT).show();
+                    }
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //shows list of addresses to reference and calls retrieveAddressData() to populate balance field
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -115,8 +146,6 @@ public class AddressFragment extends Fragment {
     public void checkForExistingFile(){
         log.info("checkForExistingFile() called");
         try{
-            //create reference to file path
-            //file = new File(fileName);
             //if file doesn't exist create it else read from it
             if(!file.exists()){
                 log.info("File DNE!");
@@ -135,17 +164,9 @@ public class AddressFragment extends Fragment {
     //Write to a file contents of arraylist
     public void writeFile(String file){
         log.info("writeFile() called");
-        //PrintWriter outFile = null;
-        FileOutputStream output = null;
-        ObjectOutputStream out = null;
+        FileOutputStream output;
+        ObjectOutputStream out;
         try{
-            /*
-            outFile = new PrintWriter(new FileOutputStream(file));
-            for(String bitAddress : addrList){
-                outFile.write(bitAddress + "\n");
-            }
-            outFile.close();
-            */
             //In order to write arraylist, it must be serialized
             output = c.openFileOutput(file, Context.MODE_PRIVATE);
             out = new ObjectOutputStream(output);
@@ -164,9 +185,8 @@ public class AddressFragment extends Fragment {
     //Read from file and populate arraylist
     public void readFile(String file){
         log.info("readFile() called");
-        //BufferedReader rd = null;
-        FileInputStream input = null;
-        ObjectInputStream in = null;
+        FileInputStream input;
+        ObjectInputStream in;
         try{
             //In order to read arraylist, it must be deserialized
             input = c.openFileInput(file);
@@ -174,14 +194,6 @@ public class AddressFragment extends Fragment {
             addrList = (ArrayList) in.readObject();
             in.close();
             input.close();
-            /*
-            rd = new BufferedReader(new FileReader(file));
-            String line;
-            while((line = rd.readLine()) != null){
-                addrList.add(line);
-            }
-            rd.close();
-            */
             log.info("Reading completed successfully");
         } catch(FileNotFoundException e){
             e.printStackTrace();
@@ -225,7 +237,6 @@ public class AddressFragment extends Fragment {
                 } catch(Exception e){
                     e.printStackTrace();
                 }
-
             }
         };
         t.start();
@@ -237,7 +248,7 @@ public class AddressFragment extends Fragment {
             try {
                 JSONObject addressObject = new JSONObject((String) msg.obj);
                 ((TextView) getView().findViewById(R.id.addrBalance))
-                        .setText(String.valueOf(addressObject.getString("final_balance")));
+                        .setText("$ " + String.valueOf(addressObject.getString("final_balance")));
             } catch (JSONException e) {
                 log.info("JSON Parsing error in AddressFragment - responseHandler()");
                 e.printStackTrace();
@@ -248,5 +259,4 @@ public class AddressFragment extends Fragment {
             return true;
         }
     });
-
 }

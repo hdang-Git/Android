@@ -5,7 +5,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_bitcoin"
-            android:icon="@drawable/ic_attach_money_black_24dp"
+            android:icon="@drawable/currency_btc"
             android:title="@string/bitcoinPrice" />
         <item
             android:id="@+id/nav_charts"
@@ -13,11 +13,11 @@
             android:title="@string/bitcoinCharts" />
         <item
             android:id="@+id/nav_block"
-            android:icon="@drawable/ic_local_atm_black_24dp"
+            android:icon="@drawable/bank"
             android:title="@string/bitcoinBlock" />
         <item
             android:id="@+id/nav_address"
-            android:icon="@drawable/ic_coin_24dp"
+            android:icon="@drawable/wallet"
             android:title="@string/bitcoinAddress"
         />
     </group>
