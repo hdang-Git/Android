@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity
 
     Intent in;
     ActionBar ab;
+    GraphFragment graphFrag;
     BlockNavFragment blockFrag;
     AddressFragment addrFrag;
 
@@ -90,6 +91,8 @@ public class MainActivity extends AppCompatActivity
             //go to homepage
         } else if (id == R.id.nav_charts) {
             //show price chart
+            graphFrag = new GraphFragment();
+            transaction.replace(R.id.mainFragment, graphFrag);
             ab.setTitle("Bitcoin Graphs");
         } else if (id == R.id.nav_block) {
             //show block info

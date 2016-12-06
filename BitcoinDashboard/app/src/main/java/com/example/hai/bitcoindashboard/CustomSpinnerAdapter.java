@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter;
  * Created by Hai on 12/4/2016.
  */
 
-public class CustomListAdapter extends ArrayAdapter{
+public class CustomSpinnerAdapter extends ArrayAdapter{
 
-    public CustomListAdapter(Context context, int resource, Object[] objects) {
+    public CustomSpinnerAdapter(Context context, int resource, Object[] objects) {
         super(context, resource, objects);
     }
 
@@ -20,7 +20,13 @@ public class CustomListAdapter extends ArrayAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = super.getView(position, convertView, parent);
+        return v;
+    }
 
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        View v =  super.getDropDownView(position, convertView, parent);
         return v;
     }
 }

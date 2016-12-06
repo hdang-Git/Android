@@ -123,13 +123,17 @@ public class AddressFragment extends Fragment {
                     if(file.exists()){
                         log.info("file exists");
                         if(deleted = file.delete()){
-                            log.info("file deleted" + deleted);
+                            log.info("file deleted ");
+                            //TODO: fixme
+                            checkForExistingFile();
+                            adapter.notifyDataSetChanged();
                             Toast.makeText(getContext(), "History cleared", Toast.LENGTH_SHORT).show();
+                        } else {
+                            log.info("No file to delete: " + deleted);
                         }
-                        log.info("No file to delete: " + deleted);
                     } else {
-                        log.info("No such file to delete");
-                        Toast.makeText(getContext(), "No addresses exists", Toast.LENGTH_SHORT).show();
+                        log.info("file DNE");
+                        Toast.makeText(getContext(), "No previous history exists", Toast.LENGTH_SHORT).show();
                     }
                 }catch(NullPointerException e){
                     e.printStackTrace();
@@ -221,8 +225,8 @@ public class AddressFragment extends Fragment {
     }
 
     public String appendToUrl(String address){
-        //return "http://btc.blockr.io/api/v1/address/balance/" + address;
-        return "https://blockchain.info/address/" + address + "?format=json";
+        return "http://btc.blockr.io/api/v1/address/balance/" + address;
+        //return "https://blockchain.info/address/" + address + "?format=json";
     }
 
     public void retrieveAddressData(String url){
@@ -266,8 +270,9 @@ public class AddressFragment extends Fragment {
         public boolean handleMessage(Message msg){
             try {
                 JSONObject addressObject = new JSONObject((String) msg.obj);
+                JSONObject dataObject = addressObject.getJSONObject("data");
                 ((TextView) getView().findViewById(R.id.addrBalance))
-                        .setText("$ " + String.valueOf(addressObject.getString("final_balance")));
+                        .setText("$ " + String.valueOf(dataObject.getString("balance")));
             } catch (JSONException e) {
                 log.info("JSON Parsing error in AddressFragment - responseHandler()");
                 e.printStackTrace();
