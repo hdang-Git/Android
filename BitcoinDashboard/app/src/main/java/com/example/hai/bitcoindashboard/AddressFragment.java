@@ -56,7 +56,8 @@ public class AddressFragment extends Fragment {
     ArrayList<String> addrList; //arraylist of addresses to store
     String fileName = "addressStuff"; //filename of internal file
     File file;
-    Context c;      //applicaiton context
+    Context c;      //application context
+    boolean validAddress = false;
 
     //default list of addresses
     String[] arr = {"198aMn6ZYAczwrE5NvNTUMyJ5qkfy4g3Hi", "1L8meqhMTRpxasdGt8DHSJfscxgHHzvPgk",
@@ -80,7 +81,8 @@ public class AddressFragment extends Fragment {
         list = (ListView) v.findViewById(R.id.listView);
 
         //find file reference to implement internal file storage
-        file = getActivity().getFilesDir();
+        //file = getActivity().getFilesDir();
+        //get application context
         c = getActivity().getApplicationContext();
         checkForExistingFile();
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, addrList);
@@ -95,10 +97,15 @@ public class AddressFragment extends Fragment {
 
                     String address = input.getText().toString();
                     retrieveAddressData(address);
-                    addrList.add(0, address);       //add to beginning of arraylist, and shift all others
-                    adapter.notifyDataSetChanged(); //update listview
+                    if(validAddress){
+                        addrList.add(0, address);       //add to beginning of arraylist, and shift all others
+                        adapter.notifyDataSetChanged(); //update listview
+                        writeFile(fileName);            //update file
+                        validAddress = false;           //reset flag
+                    }
                 }catch(NullPointerException e){
                     Log.d("", "Null Pointer Error in AddressFragment - onCreateView() " + e);
+                    e.printStackTrace();
                 }
             }
         });
@@ -107,9 +114,11 @@ public class AddressFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Floating Action Button clicked", Toast.LENGTH_SHORT).show();
                 try{
                     boolean deleted;
+                    //File file = getActivity().getFileStreamPath(fileName);
+                    File dir = getActivity().getFilesDir();
+                    File file = new File(dir, fileName);
                     log.info("Delete internal address file called");
                     if(file.exists()){
                         log.info("file exists");
@@ -133,7 +142,7 @@ public class AddressFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("", "onItemClick() for listview is called");
-                String address = list.getItemAtPosition(position).toString();
+                String address = list.getItemAtPosition(position).toString(); //Get string of selected address in listview
                 retrieveAddressData(address);
             }
         });
@@ -144,16 +153,23 @@ public class AddressFragment extends Fragment {
     //Checks for existing internal file. If doesn't exist, make one and load in arr into arrayList
     //If does exist, read and fill in arrayList
     public void checkForExistingFile(){
+        //find file reference to implement internal file storage
+        //file = getActivity().getFilesDir();
+        file = getActivity().getFileStreamPath(fileName);
         log.info("checkForExistingFile() called");
         try{
             //if file doesn't exist create it else read from it
             if(!file.exists()){
                 log.info("File DNE!");
+                //Create a new file
+                file = new File(fileName);
                 //populate arraylist with array
                 addrList = new ArrayList<>(Arrays.asList(arr));
+                //write to file
                 writeFile(fileName);
             } else {
                 log.info("File Exists!");
+                //read from file
                 readFile(fileName);
             }
         } catch(NullPointerException e){
@@ -234,8 +250,11 @@ public class AddressFragment extends Fragment {
 
                     Log.d("downloaded data", response);
                     responseHandler.sendMessage(msg);
+                    validAddress = true;
+                    log.info("It is a valid address");
                 } catch(Exception e){
                     e.printStackTrace();
+                    log.info("Not a valid address");
                 }
             }
         };
