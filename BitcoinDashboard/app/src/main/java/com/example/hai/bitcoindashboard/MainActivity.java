@@ -3,6 +3,7 @@ package com.example.hai.bitcoindashboard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,8 +18,8 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Intent in;
     ActionBar ab;
+    BTCPrice btcPriceFrag;
     GraphFragment graphFrag;
     BlockNavFragment blockFrag;
     AddressFragment addrFrag;
@@ -39,14 +40,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        startUp();
 
-        //Create imageView
-        // ImageView img = (ImageView) findViewById(R.id.imageView);
-        //Picasso.with(img.getContext()).load("http://i.imgur.com/DvpvklR.png").into(img);
         ab = getSupportActionBar();
     }
 
 
+    public void startUp(){
+        btcPriceFrag = new BTCPrice();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.mainFragment, btcPriceFrag)
+                .commit();
+    }
 
     @Override
     public void onBackPressed() {
@@ -89,6 +94,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_bitcoin) {
             //go to homepage
+            btcPriceFrag = new BTCPrice();
+            transaction.replace(R.id.mainFragment, btcPriceFrag);
         } else if (id == R.id.nav_charts) {
             //show price chart
             graphFrag = new GraphFragment();
