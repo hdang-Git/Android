@@ -98,21 +98,22 @@ public class MainActivity extends AppCompatActivity
             //go to homepage
             btcPriceFrag = new BTCPrice();
             transaction.replace(R.id.mainFragment, btcPriceFrag);
+            ab.setTitle(getString(R.string.app_name));
         } else if (id == R.id.nav_charts) {
             //show price chart
             graphFrag = new GraphFragment();
             transaction.replace(R.id.mainFragment, graphFrag);
-            ab.setTitle("Bitcoin Graphs");
+            ab.setTitle(getString(R.string.bitcoinGraphs));
         } else if (id == R.id.nav_block) {
             //show block info
             blockFrag = new BlockNavFragment();
             transaction.replace(R.id.mainFragment, blockFrag);
-            ab.setTitle("Block Info");
+            ab.setTitle(getString(R.string.blockInfo));
         } else if(id == R.id.nav_address){
             //get current balance of provided bitcoin address
             addrFrag = new AddressFragment();
             transaction.replace(R.id.mainFragment, addrFrag);
-            ab.setTitle("Address Info");
+            ab.setTitle(getString(R.string.addrInfo));
         }
         transaction.addToBackStack(null);
         transaction.commit();

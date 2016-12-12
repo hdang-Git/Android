@@ -48,7 +48,7 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/input_addr"
-            android:hint="Enter in Address"
+            android:hint="@string/hintAddr"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/addrBalance"
             android:layout_alignStart="@+id/addrBalance"

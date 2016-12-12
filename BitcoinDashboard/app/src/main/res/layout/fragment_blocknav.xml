@@ -30,7 +30,7 @@
             android:layout_above="@+id/pager"
             android:layout_alignParentStart="true"
             android:layout_marginStart="14dp"
-            android:hint="Enter Block Number" />
+            android:hint="@string/hintBlockNav" />
 
         <Button
             android:text="Enter"

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Strings for BlockNav-->
+    <string name="hintBlockNav">Introduzca su Número de Bloque</string>
+
+    <!-- String for Block -->
     <string name="blockNum">Número de bloque: </string>
     <string name="hash">Hash: </string>
     <string name="version">Versión: </string>

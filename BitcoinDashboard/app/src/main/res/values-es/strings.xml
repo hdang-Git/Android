@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Bitcoin Dashboard</string>
+    <string name="app_name">Tablero de Bitcoin</string>
 
     <!-- Strings for nav drawer and main activity-->
     <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
@@ -10,6 +10,11 @@
     <string name="bitcoinBlock">BTC Bloque </string>
     <string name="bitcoinAddress">BTC Dirección</string>
     <string name="action_settings">Configuración</string>
+
+    <!-- Strings for use for main activity at runtime-->
+    <string name="bitcoinGraphs">Bitcoin Gráfico</string>
+    <string name="blockInfo">Bloque Información </string>
+    <string name="addrInfo">Dirección Información </string>
 
     <string name="bitcoinMP"></string>
     <!-- TODO: Remove or change this placeholder text -->
